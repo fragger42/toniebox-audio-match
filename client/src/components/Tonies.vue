@@ -1,17 +1,27 @@
 <template>
-  <select class="form-control" @change="tonieSelected">
-    <option selected disabled>Wähle deinen Tonie</option>
-    <option v-for="tonie in tonies" :key="tonie.id" :value="tonie.id">
-      {{ tonie.name }}
-    </option>
-  </select>
+  <label for="tonieselect">
+    <select id="tonieselect" class="form-control" @change="tonieSelected">
+      <option selected disabled>Wähle deinen Tonie</option>
+      <option v-for="tonie in tonies" :key="tonie.id" :value="tonie.id">
+        {{ tonie.name }}
+      </option>
+    </select>
+  </label>
 </template>
 
 <script>
 export default {
   props: {
-    tonies: String,
-    audiobookID: String,
+    tonies: {
+      type: String,
+      required: true,
+      default: '',
+    },
+    audiobookID: {
+      type: String,
+      required: true,
+      default: '',
+    },
   },
   methods: {
     tonieSelected(event) {
