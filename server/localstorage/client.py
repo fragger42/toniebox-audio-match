@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Set
 
 from tinytag import TinyTag
@@ -35,6 +35,12 @@ def audiofiles(album: Path) -> Set[Path]:
 
 def metadata(file: Path) -> AudioTag:
     tags = TinyTag.get(str(file))
+    if(tags.album is None):
+        tags.album=PurePosixPath(file).parent.name
+    if(tags.track is None):
+        tags.track=PurePosixPath(file).stem
+    if(tags.title is None):
+        tags.title=PurePosixPath(file).stem
     logger.debug("Fetched metadata for file '%s': %s", file, tags)
 
     return AudioTag(album=tags.album, artist=tags.albumartist, title=tags.title, track=tags.track, disc=tags.disc)
