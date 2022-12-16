@@ -1,3 +1,4 @@
+import os
 import imghdr
 import logging
 from dataclasses import dataclass
@@ -23,8 +24,7 @@ class AudioTrack:
 
 @dataclass(frozen=True)
 class AudioBook:
-    covers: ClassVar[Path] = Path("assets/covers")
-
+    covers: ClassVar[Path] = Path(os.environ.get("TONIE_AUDIO_MATCH_MEDIA_PATH"))
     id: str
     album: str
     album_no: int
@@ -56,10 +56,12 @@ class AudioBook:
             print("WARNING De-normalized album title.")
 
         tags_first = metadata(tracks[0].file)
-
+        
         album_id = cls.path_hash(album)
-        cover_path = cls.cover_path_for(album_id)
-        cover_path = cls.persist_cover(cover_path, TinyTag.get(str(tracks[0].file), image=True).get_image())
+        if os.path.exists(album.joinpath("logo.jpg")):
+            cover_path = album.joinpath("logo.jpg")
+        else:
+            cover_path = ""
 
         return cls(
             id=album_id,
@@ -73,25 +75,3 @@ class AudioBook:
     @staticmethod
     def path_hash(path: Path) -> str:
         return sha512(str(path).encode("utf-8")).hexdigest()
-
-    @classmethod
-    def cover_path_for(cls, id: str) -> Path:
-        return cls.covers.joinpath(id)
-
-    @staticmethod
-    def persist_cover(file: Path, image: Optional[bytes]) -> Optional[Path]:
-        if not image:
-            return
-
-        image_stream = BytesIO(image)
-        image_type = imghdr.what(image_stream)
-
-        if not image_type:
-            logger.error("Could not determine image type for file: %s", file)
-            return
-
-        file = file.with_suffix(f".{image_type}")
-        with file.open("wb") as ch:
-            ch.write(image)
-
-        return file
