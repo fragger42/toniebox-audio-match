@@ -46,8 +46,7 @@
       "requireConfigFile": false
     },
     "rules": {
-      "vue/multi-word-component-names": 0,
-      "vuejs-accessibility/form-control-has-label": 0
+      "vue/multi-word-component-names": 0
     }
   },
   "browserslist": [
