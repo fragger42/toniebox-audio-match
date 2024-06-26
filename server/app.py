@@ -17,7 +17,7 @@ from toniecloud.client import TonieCloud
 logging.basicConfig(level=logging.DEBUG, stream=sys.stderr)
 logger = logging.getLogger(__name__)
 
-DEBUG = True
+DEBUG = False
 
 # instantiate the app
 app = Flask(__name__)
@@ -104,7 +104,7 @@ def upload_album_to_tonie():
 def getLogo():
     audiobook = request.args.get('audiobook_id')
     upload = Upload.from_ids("", audiobook=request.args.get('audiobook_id'))
-    return send_file(upload.audiobook.cover, attachment_filename='logo.jpg')
+    return send_file(upload.audiobook.cover, download_name='logo.jpg')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
