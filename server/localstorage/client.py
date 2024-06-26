@@ -39,6 +39,8 @@ def metadata(file: Path) -> AudioTag:
         tags.album=PurePosixPath(file).parent.name
     if(tags.track is None):
         tags.track=PurePosixPath(file).stem
+    else:
+        tags.track=tags.track.rjust(10, '0')
     if(tags.title is None):
         tags.title=PurePosixPath(file).stem
     logger.debug("Fetched metadata for file '%s': %s", file, tags)
