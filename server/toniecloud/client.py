@@ -46,7 +46,10 @@ class TonieCloud:
             url = f"households/{household.id}/creativetonies"
             data = self._get(url)
             for tonie in data:
-                tonies.append(Tonie(id=tonie["id"], household=household, name=tonie["name"], image=tonie["imageUrl"]))
+                tmp=tonie["id"]
+                url = f"households/{household.id}/creativetonies/{tmp}"
+                data2 = self._get(url)
+                tonies.append(Tonie(id=tonie["id"], household=household, name=tonie["name"], image=tonie["imageUrl"], playlist=data2["chapters"], transcodingErrors = data2["transcodingErrors"], secondsRemaining = data2["secondsRemaining"]))
 
         return tonies
 
