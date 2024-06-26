@@ -65,7 +65,7 @@ class AudioBook:
 
         return cls(
             id=album_id,
-            album=tracks[0].album,
+            album=album.name,
             album_no=tags_first.disc,
             artist=tags_first.artist,
             cover=cover_path,
