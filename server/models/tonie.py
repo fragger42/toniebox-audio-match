@@ -12,3 +12,6 @@ class Tonie:
     household: Household
     name: str
     image: str
+    playlist: str
+    transcodingErrors: str
+    secondsRemaining: int
